@@ -17,11 +17,12 @@ const vueImpDirectives = {
       return offsetTop
     }
 
-    function isInview (curDom) {
-      const viewTop =
+    function isInview (curDom, isBaseContainer) {
+      const scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop
+      const viewTop = curDom.offsetParent && isBaseContainer ? scrollTop + getOffsetTop(curDom.offsetParent) : scrollTop
       const viewBottom = window.innerHeight + viewTop
       const offsetTop = getOffsetTop(curDom)
       console.log('isInview:', offsetTop, viewTop, viewBottom)
@@ -52,7 +53,7 @@ const vueImpDirectives = {
     }
 
     function handle () {
-      if (isInview(el)) {
+      if (isInview(el, value.isBaseContainer)) {
         console.log(el)
         let event = new Event('imp')
         el.dispatchEvent(event)

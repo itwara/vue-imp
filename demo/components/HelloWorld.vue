@@ -7,8 +7,8 @@
       </li>
     </ul>
     <h2>Ecosystem</h2>
-    <ul>
-      <li v-for="(item,idx) in Ecosystems" :key="idx">
+    <ul class="eco-container">
+      <li v-for="(item,idx) in Ecosystems" :key="idx" v-imp="impOption" @imp="onImp">
         <a :href="item.href" target="_blank">{{item.title}}</a>
       </li>
     </ul>
@@ -143,7 +143,8 @@ export default {
         }
       ],
       impOption: {
-        delay: 10
+        delay: 10,
+        isBaseContainer: true
       }
     }
   },
