@@ -1,9 +1,9 @@
 {
   "name": "@mellicapen/vue-imp",
-  "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "itwara<itwara@sina.com>",
-  "private": true,
+  "version": "1.0.1",
+  "description": "一个简单的用于解决vue曝光的指令",
+  "author": "itwara <itwara@sina.com>",
+  "private": false,
   "main": "dist/vue-imp.js",
   "files": [
     "dist/*.js",
@@ -84,5 +84,22 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itwara/vue-imp.git"
+  },
+  "keywords": [
+    "imp",
+    "曝光",
+    "vue"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itwara/vue-imp/issues"
+  },
+  "homepage": "https://github.com/itwara/vue-imp#readme"
 }
