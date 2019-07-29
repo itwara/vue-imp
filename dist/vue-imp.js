@@ -75,8 +75,103 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "imp", function() { return vueImpDirectives; });
+var vueImpPulgin = {};
+var vueImpDirectives = {
+  bind: function bind(el, _ref, vnode) {
+    var value = _ref.value;
+
+    function isServer(vNode) {
+      return typeof vNode.componentInstance !== 'undefined' && vNode.componentInstance.$isServer;
+    }
+
+    function getOffsetTop($dom) {
+      var curDom = $dom;
+      var offsetTop = $dom.offsetTop;
+      while (curDom.offsetParent !== null) {
+        curDom = curDom.offsetParent;
+        offsetTop += curDom.offsetTop;
+      }
+      return offsetTop;
+    }
+
+    function isInview(curDom) {
+      var viewTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      var viewBottom = window.innerHeight + viewTop;
+      var offsetTop = getOffsetTop(curDom);
+      console.log('isInview:', offsetTop, viewTop, viewBottom);
+      return offsetTop >= viewTop && offsetTop <= viewBottom;
+    }
+
+    function throttling(fn, wait) {
+      var timer = void 0;
+      var context = void 0,
+          args = void 0;
+      var run = function run() {
+        timer = setTimeout(function () {
+          fn.apply(context, args);
+          clearTimeout(timer);
+          timer = null;
+        }, wait);
+      };
+
+      return function () {
+        context = this;
+        args = arguments;
+        if (!timer) {
+          console.log('throttle, set');
+          run();
+        } else {
+          console.log('throttle, ignore');
+        }
+      };
+    }
+
+    function handle() {
+      if (isInview(el)) {
+        console.log(el);
+        var event = new Event('imp');
+        el.dispatchEvent(event);
+      }
+    }
+
+    var delay = value ? value.delay : 200;
+    var scrollHandle = throttling(handle, delay);
+
+    el.data = {
+      isServer: isServer,
+      handle: handle,
+      scrollHandle: scrollHandle
+    };
+
+    if (!isServer(vnode)) {
+      window.addEventListener('scroll', scrollHandle);
+    }
+  },
+  inserted: function inserted(el, _ref2, vnode) {
+    var value = _ref2.value;
+
+    if (!el.data.isServer(vnode)) {
+      el.data.handle();
+    }
+  },
+  unbind: function unbind(el, _ref3, vnode) {
+    var value = _ref3.value;
+
+    if (!el.data.isServer(vnode)) {
+      console.log(el);
+      window.removeEventListener('scroll', el.data.scrollHandle);
+    }
+  }
+};
+vueImpPulgin.install = function (Vue, options) {
+  Vue.directives('imp', vueImpDirectives);
+};
+/* harmony default export */ __webpack_exports__["default"] = (vueImpPulgin);
 
 
 /***/ })

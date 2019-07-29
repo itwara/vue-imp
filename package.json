@@ -1,6 +1,6 @@
 {
   "name": "@mellicapen/vue-imp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "一个简单的用于解决vue曝光的指令",
   "author": "itwara <itwara@sina.com>",
   "private": false,
