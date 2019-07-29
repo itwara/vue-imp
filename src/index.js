@@ -1,6 +1,8 @@
 const vueImpPulgin = {}
 const vueImpDirectives = {
-  bind (el, binding, vnode) {
+  bind (el, {
+    value
+  }, vnode) {
     function isServer (vNode) {
       return typeof vNode.componentInstance !== 'undefined' && vNode.componentInstance.$isServer
     }
@@ -26,6 +28,29 @@ const vueImpDirectives = {
       return offsetTop >= viewTop && offsetTop <= viewBottom
     }
 
+    function throttling (fn, wait) {
+      let timer
+      let context, args
+      let run = () => {
+        timer = setTimeout(() => {
+          fn.apply(context, args)
+          clearTimeout(timer)
+          timer = null
+        }, wait)
+      }
+
+      return function () {
+        context = this
+        args = arguments
+        if (!timer) {
+          console.log('throttle, set')
+          run()
+        } else {
+          console.log('throttle, ignore')
+        }
+      }
+    }
+
     function handle () {
       if (isInview(el)) {
         console.log(el)
@@ -34,24 +59,32 @@ const vueImpDirectives = {
       }
     }
 
+    const delay = value ? value.delay : 200
+    const scrollHandle = throttling(handle, delay)
+
     el.data = {
       isServer,
-      handle
+      handle,
+      scrollHandle
     }
 
     if (!isServer(vnode)) {
-      window.addEventListener('scroll', handle)
+      window.addEventListener('scroll', scrollHandle)
     }
   },
-  inserted (el, binding, vnode) {
+  inserted (el, {
+    value
+  }, vnode) {
     if (!el.data.isServer(vnode)) {
       el.data.handle()
     }
   },
-  unbind (el, binding, vnode) {
+  unbind (el, {
+    value
+  }, vnode) {
     if (!el.data.isServer(vnode)) {
       console.log(el)
-      window.removeEventListener('scroll', el.data.handle)
+      window.removeEventListener('scroll', el.data.scrollHandle)
     }
   }
 }

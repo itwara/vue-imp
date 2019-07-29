@@ -2,7 +2,7 @@
   <div class="hello">
     <h2>Essential Links</h2>
     <ul>
-      <li v-for="(item, idx) in EssentialLinks" :key="idx" v-imp @imp="onImp">
+      <li v-for="(item, idx) in EssentialLinks" :key="idx" v-imp="impOption" @imp="onImp">
         <a :href="item.href" target="_blank">{{item.title}}</a>
       </li>
     </ul>
@@ -141,7 +141,10 @@ export default {
           href: 'https://github.com/vuejs/awesome-vue',
           title: 'awesome-vue'
         }
-      ]
+      ],
+      impOption: {
+        delay: 10
+      }
     }
   },
   directives: {
